@@ -1,0 +1,115 @@
+body{
+    margin: 0;
+    background-color:black ;
+    color: white;
+    font-family: Poppins;
+}
+p{
+    margin: 0;
+}
+.weather-emoji{
+    font-size: 4rem;
+}
+h1{
+    margin: 0;
+    margin-bottom: 1rem;
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    gap: 5rem;
+}
+.input-form input, .input-form button{
+    font-size: 1.5rem;
+}
+.input-form input{
+    border-radius: 1rem;
+    border: none;
+    height: 3rem;
+    padding: 0 10px;
+    background-color: transparent;
+    caret-color: white;
+    color: white;
+}
+.input-form input:focus{
+    outline: none;
+}
+.input-form button{
+    border: 3px solid;
+    border-color: linear-gradient(red,blue);
+    border-radius: 2rem;
+    padding: 10px;
+    background-color: transparent;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+.input-form button:hover{
+    transition: 0.3s ease-in-out;
+    transform: scale(1.02);
+}
+.input-form button:active{
+    transition: 0.3s ease-in-out;
+    transform: scale(1);
+}
+
+.weather-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 2rem;
+    height: 27vh;
+    max-width: 30vw;
+    border-radius: 3rem;
+    margin: 0;
+    text-align: center;
+    background-color: black;
+    color: white;
+    /* z-index: 1; */
+    /* overflow: hidden;  */
+}
+
+@property --angle{
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.weather-card::after ,.weather-card::before{
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    z-index: -1;
+    padding: 0.2rem;
+    background-image: conic-gradient(from var(--angle), red,blue,green,yellow,magenta,red);
+    background-size: 300% 300%;
+    border-radius: inherit;
+    backdrop-filter: blur(1rem);
+    animation: 3s spin linear infinite;
+}
+
+@keyframes spin {
+    from {
+        --angle:0deg;
+    }
+    to {
+        --angle:360deg;
+    }
+}
+.weather-card::before{
+    filter: blur(1.5rem);
+    opacity: 0.8;
+}
+.errorDisplay{
+    font-size: 2rem;
+    color: white;
+}
