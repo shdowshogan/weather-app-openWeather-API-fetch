@@ -131,3 +131,9 @@ h1{
         width: auto;
     }
 }
+
+.gradient{
+    background:linear-gradient(to right, red, blue);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
