@@ -33,6 +33,7 @@ h1{
     background-color: transparent;
     caret-color: white;
     color: white;
+    /* box-shadow: 0 0 50px rgba(255,255,255); */
 }
 .input-form input:focus{
     outline: none;
@@ -63,8 +64,8 @@ h1{
     justify-content: center;
     align-items: center;
     padding: 3rem 2rem;
-    height: 27vh;
-    max-width: 30vw;
+    height: 16rem;
+    width: 12rem;
     border-radius: 3rem;
     margin: 0;
     text-align: center;
@@ -112,4 +113,21 @@ h1{
 .errorDisplay{
     font-size: 2rem;
     color: white;
+}
+
+
+@media (max-width:480px) {
+    .input-form{
+        display: flex;
+        flex-direction: column;
+        gap: 1.3rem;
+        justify-content: center;
+        align-items: center;
+        height: fit-content;
+    }
+
+    .weather-card{
+        height: 26vh;
+        width: auto;
+    }
 }
