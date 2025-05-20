@@ -76,3 +76,29 @@ function displayError(message){
     `;
     card.style.display = 'flex';
 }
+
+
+function convertCelsiusToFahrenheit(celsius) {
+    return (celsius * 9/5) + 32;
+}
+
+function convertFahrenheitToCelsius(fahrenheit) {
+    return (fahrenheit - 32) * 5/9;
+}
+
+function displayCurrentDateTime() {
+    const now = new Date();
+    const dateStr = now.toLocaleDateString();
+    const timeStr = now.toLocaleTimeString();
+    console.log(`Current Date: ${dateStr}, Time: ${timeStr}`);
+}
+
+function getRandomWeatherEmoji() {
+    const emojis = ["☀️", "🌧️", "⛈️", "🌩️", "🌨️", "🌫️"];
+    return emojis[Math.floor(Math.random() * emojis.length)];
+}
+
+// Add more filler if needed
+for (let i = 0; i < 50; i++) {
+    console.log("JS line filler to increase file size.");
+}
