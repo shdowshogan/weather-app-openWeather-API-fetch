@@ -11,14 +11,50 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <div class="nav-bar">
+        <div class="website-name">
+            <a href="index.html" style="text-decoration: none;">
+                <span class="gradient">Weather</span>
+            </a>
+        </div>
         <form class="input-form">
             <input type="text" placeholder="Enter city name" class="cityInput">
             <button type="submit">Get Weather</button>
+            <button id="getLocationBtn" type="submit">Get My location</button>
         </form>
-        
-        <div class="weather-card">
-            
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <!-- <a href="forecast.html">Forecast</a> -->
+            <a href="map.html">Weather Map</a>
+        </div>
+    </div>
+    <div class="container">
+        <!-- <h1>Welcome to the <span class="gradient">Weather</span> App</h1> -->
+        <div class="weather-container">
+            <div class="weather-ten-day-forecast">
+                <div class="gradient-border">
+                    <div class="weather-card">
+                        
+                    </div>
+                </div>
+                <div class="gradient-border">
+                    <div class="ten-day-forecast">
+                        <h2>10-Day Forecast</h2>
+                        <div class="forecast-cards">
+                            <!-- Forecast cards will be dynamically generated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="gradient-border">
+                <div class="hourly-forecast">
+                    <h2>Hourly Forecast</h2>
+                    <div class="hourly-cards">
+                        <!-- Hourly forecast cards will be dynamically generated here -->
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
     
