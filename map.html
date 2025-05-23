@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather map</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="map-style.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div class="nav-bar">
+        <div class="website-name">
+            <a href="index.html" style="text-decoration: none;">
+                <span class="gradient">Weather</span>
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="map.html">Weather Map</a>
+        </div>
+    </div>
+
+    <div class="radar-container">
+        <div class="overlay-toggle">
+            <button onclick="setOverlay('wind')">Wind</button>
+            <button onclick="setOverlay('temp')">Temperature</button>
+            <button onclick="setOverlay('pressure')">Pressure</button>
+            <button onclick="setOverlay('clouds')">Clouds</button>
+            <button onclick="setOverlay('rain')">Rain</button>
+        </div>
+
+        <div class="iframe-wrapper">
+            <iframe id="weatherMap" src="https://embed.windy.com/embed2.html?lat=20&lon=78&detailLat=20&detailLon=78&zoom=5&level=surface&overlay=wind&menu=&message=true&marker=true&calendar=now&pressure=true&type=map&location=coordinates&detail=true&metricWind=default&metricTemp=default&radarRange=-1" loading="lazy" allowfullscreen title="Weather Map"></iframe>
+        </div>
+    </div>
+
+    <script>
+        function setOverlay(type) {
+            const baseURL = 'https://embed.windy.com/embed2.html';
+            const params = new URLSearchParams({
+                lat: 20,
+                lon: 78,
+                detailLat: 20,
+                detailLon: 78,
+                zoom: 5,
+                level: 'surface',
+                overlay: type,
+                menu: '',
+                message: 'true',
+                marker: 'true',
+                calendar: 'now',
+                pressure: 'true',
+                type: 'map',
+                location: 'coordinates',
+                detail: 'true',
+                metricWind: 'default',
+                metricTemp: 'default',
+                radarRange: '-1'
+            });
+            const iframe = document.getElementById('weatherMap');
+            iframe.src = `${baseURL}?${params.toString()}`;
+        }
+    </script>
+</body>
+</html>

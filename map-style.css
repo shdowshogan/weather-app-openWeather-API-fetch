@@ -1,0 +1,58 @@
+
+body{
+    margin: 0;
+    background-color:black ;
+    color: white;
+    font-family: Poppins;
+    background-image: url(images/aHR0cHM6Ly9iLnN0YWJsZWNvZy5jb20vNTg0YzAyZWQtOWE0OS00NTA1LTllMWQtNjllZDkwOTgyZWMxLmpwZWc.webp);
+}
+
+.radar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    min-height: 80vh;
+    gap: 1.5rem;
+}
+
+.iframe-wrapper {
+    width: 100%;
+    max-width: 90rem;
+    aspect-ratio: 16 / 8;
+    border: 4px solid white;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.15);
+}
+
+.iframe-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.overlay-toggle {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    scale: 1.3;
+}
+
+.overlay-toggle button {
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: bold;
+}
+
+.overlay-toggle button:hover {
+    background-color: white;
+    color: black;
+    transition: background-color 0.3s;
+}
