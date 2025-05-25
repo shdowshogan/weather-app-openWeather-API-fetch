@@ -3,7 +3,7 @@ body{
     background-color:black ;
     color: white;
     font-family: Poppins;
-    background-image: url(images/aHR0cHM6Ly9iLnN0YWJsZWNvZy5jb20vNTg0YzAyZWQtOWE0OS00NTA1LTllMWQtNjllZDkwOTgyZWMxLmpwZWc.webp);
+    background-image: url("images/aHR0cHM6Ly9iLnN0YWJsZWNvZy5jb20vNTg0YzAyZWQtOWE0OS00NTA1LTllMWQtNjllZDkwOTgyZWMxLmpwZWc.webp");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center; 
