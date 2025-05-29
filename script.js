@@ -204,43 +204,61 @@ function displayForecast(data) {
 
 const getLocationBtn = document.getElementById('getLocationBtn');
 
-if (getLocationBtn) {
-    getLocationBtn.addEventListener('click', () => {
-        if (navigator.geolocation) {
+async function getWeatherByGeolocation() {
+    if (navigator.geolocation) {
+        if (getLocationBtn) {
             getLocationBtn.disabled = true;
             getLocationBtn.textContent = "Locating...";
-            navigator.geolocation.getCurrentPosition(async (position) => {
-                const { latitude, longitude } = position.coords;
-                try {
-                    // Reverse geocode to get city name
-                    const geoRes = await fetch(`https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=${apiKey}`);
-                    const geoData = await geoRes.json();
-                    if (geoData && geoData.length > 0) {
-                        let city = geoData[0].name.split(" ")[0];
-                        cityInput.value = city;
-                        // Fetch and display weather
-                        const weatherData = await getWeatherData(city);
-                        const forecastData = await getForecastData(city);
-                        displayWeather(weatherData);
-                        displayForecast(forecastData);
-                    } else {
-                        displayError("Could not determine your city.");
-                    }
-                } catch (err) {
-                    displayError("Location error: " + err.message);
-                }
-                getLocationBtn.disabled = false;
-                getLocationBtn.textContent = "Use My Location";
-            }, (error) => {
-                displayError("Location access denied.");
-                getLocationBtn.disabled = false;
-                getLocationBtn.textContent = "Use My Location";
-            });
-        } else {
-            displayError("Geolocation is not supported by your browser.");
         }
-    });
+
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const { latitude, longitude } = position.coords;
+            try {
+                const geoRes = await fetch(`https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=${apiKey}`);
+                const geoData = await geoRes.json();
+                if (geoData && geoData.length > 0) {
+                    const city = geoData[0].name.split(" ")[0];
+                    cityInput.value = city;
+
+                    const weatherData = await getWeatherData(city);
+                    const forecastData = await getForecastData(city);
+                    displayWeather(weatherData);
+                    displayForecast(forecastData);
+                } else {
+                    displayError("Could not determine your city.");
+                }
+            } catch (err) {
+                displayError("Location error: " + err.message);
+            }
+
+            if (getLocationBtn) {
+                getLocationBtn.disabled = false;
+                getLocationBtn.textContent = "Use My Location";
+            }
+        }, (error) => {
+            displayError("Location access denied.");
+            if (getLocationBtn) {
+                getLocationBtn.disabled = false;
+                getLocationBtn.textContent = "Use My Location";
+            }
+
+            // Optional fallback
+            getWeatherData('Nagpur').then(displayWeather).catch(displayError);
+            getForecastData('Nagpur').then(displayForecast).catch(displayError);
+        });
+    } else {
+        displayError("Geolocation is not supported by your browser.");
+    }
 }
+
+window.addEventListener('load',() => {
+    getWeatherByGeolocation()
+})
+
+if(getLocationBtn){
+    getLocationBtn.addEventListener('click', getWeatherByGeolocation);
+}
+
 
 function scaleContainer(scaleFactor = 1) {
     const container = document.querySelector('.container');
@@ -262,10 +280,14 @@ function autoScaleContainer() {
         scaleFactor = 0.85;
     } else if (width < 1600 && width >= 1500) {
         scaleFactor = 0.8;
-    } else if (width < 1500) {
+    } else if (width < 1500 && width >= 1400) {
         scaleFactor = 0.75;
     }
-
+    else if (width < 1400 && width >= 1300) {
+        scaleFactor = 0.7;
+    } else if (width < 1300) {
+        scaleFactor = 0.65;
+    }
     scaleContainer(scaleFactor);
 }
 
@@ -273,3 +295,53 @@ function autoScaleContainer() {
 window.addEventListener('resize', autoScaleContainer);
 window.addEventListener('load', autoScaleContainer);
 
+
+if(window.innerWidth > 1200){
+    const hamburger = document.querySelector('.hamburger-menu')
+    let scalingFactor = 0.05
+    
+    hamburger.addEventListener('click' , () => {
+        scalingFactor += 0.05
+        if(scalingFactor > 0.9){
+            scalingFactor = 0.05
+        }
+        console.log(`Current Scaling Factor is : ${scalingFactor.toFixed(2)}`)
+    })
+    
+    document.addEventListener('mousemove', (e) => {
+        const cards = document.querySelectorAll('.gradient-border');
+    
+        cards.forEach(card => {
+            const rect = card.getBoundingClientRect()
+            const cardX = rect.left + rect.width /2
+            const cardY = rect.top + rect.height /2
+            // console.log(cardX)
+            // console.log(cardY)
+    
+            const distX = e.clientX  - cardX
+            const distY = e.clientY  - cardY
+            const distance = Math.sqrt(distX ** 2 + distY ** 2)
+    
+    
+            const maxDistance = 700
+            const scale = 1 + Math.max(0,1 - distance/maxDistance) * scalingFactor
+
+            const rotateX = (distY / rect.width) * 5
+            const rotateY = (distX / rect.height) * 5
+    
+            card.style.transform = `
+                perspective(1000px)
+                scale(${scale})
+                rotateX(${rotateX}deg)
+                rotateY(${rotateY}deg)
+            `
+            card.style.boxShadow = `0 10px 30px rgba(255,255,255,${Math.max(0,1-distance/maxDistance) * 0.5})`
+        })
+    });
+
+    document.addEventListener('mouseleave', () => {
+        document.querySelectorAll('.gradient-border').forEach(card => {
+            card.style.transform = "scale(1) rotateX(0deg) rotateY(0deg)"
+        })
+    })
+}
