@@ -73,6 +73,9 @@ h1{
     border-radius: 3rem;
     padding: 2px;
     background-image: linear-gradient(to top, red, blue);
+    transition: all 0.2s ease-out;
+    will-change: transform;
+    transform-style:preserve-3d ;
     /* border-image: linear-gradient(to right, red, blue); */
     /* display: inline-block; */
 }
@@ -292,3 +295,8 @@ img{
     align-items: start;
     height: 100%;
 }
+
+.hamburger-menu{
+    cursor: pointer;
+}
+
