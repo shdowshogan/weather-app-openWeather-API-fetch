@@ -41,21 +41,43 @@ weatherForm.addEventListener('submit', async event => {
 })
 
 async function getWeatherData(city) {
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`
+    const geoUrlEarlier = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`
+
+    const geoResponseEarlier = await fetch(geoUrlEarlier)
+    const geoDataEarlier = await geoResponseEarlier.json()
+    console.log(geoDataEarlier)
+
+    const geoUrl  = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=1&appid=${apiKey}`
+    const geoRes = await fetch(geoUrl)
+    const geoData = await geoRes.json()
+    console.log(geoData)
+
+    if(!geoData.length) throw new Error("City not found. Try City or City, Country Code");
+
+    const {lat,lon} = geoData[0]
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`
     const response = await fetch(apiUrl)
-    if (!response.ok) throw new Error("Could not fetch weather data")
-    return await response.json()
+    if (!response.ok) throw new Error("Could not fetch weather data");
+
+    const weatherData = await response.json()
+    weatherData.locationInfo = geoData[0]
+    console.log(weatherData)
+    return weatherData
 }
 
 function displayWeather(data) {
+    const locationInfo = data.locationInfo || {}
+    const {name: city,state,country:countryCode} = locationInfo
     const {
-        name: city,
         main: { temp, humidity,pressure,grnd_level , sea_level,feels_like },
         weather: [{ description, id }],
         sys: { sunrise, sunset ,country},
         visibility,
         wind,clouds
     } = data
+
+    const countryName = getCountryName(countryCode)
+    const fullLocation = [city,state,countryName].filter(Boolean).join(', ')
 
     const sunriseTime = new Date(sunrise * 1000).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
     const sunsetTime = new Date(sunset * 1000).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
@@ -66,10 +88,10 @@ function displayWeather(data) {
     const windSpeed = wind.speed ? wind.speed.toFixed(2) : 'N/A'
     const windDirection = getWindDirection(wind.deg)
     const cloudCover = clouds.all ? `${clouds.all}%` : 'N/A'
-    const countryName = getCountryName(country)
+    // const countryName = getCountryName(country)
 
     card.innerHTML = `
-        <h1 class="city-name">${city}</h1>
+        <h1 class="city-name">${fullLocation}</h1>
         <p class="city-temp">Temperature : ${(temp - 273.15).toFixed(2)}°C</p>
         <p class="city-humid">Humidity : ${humidity}%</p>
         <p class="city-desc-display">${description}</p>
@@ -145,12 +167,15 @@ function displayError(message) {
 }
 
 async function getForecastData(city) {
-    const geoUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`
+    const geoUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=1&appid=${apiKey}`
     const geoResponse = await fetch(geoUrl)
     if (!geoResponse.ok) throw new Error("Could not fetch location data")
+
     const geoData = await geoResponse.json()
-    console.log(geoData)
-    const { lat, lon } = geoData.coord
+    if (!geoData.length) throw new Error("Location Not found")
+
+    // console.log(geoData)
+    const { lat, lon } = geoData[0]
 
     // Free plan 5-day/3-hour forecast API
     const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
