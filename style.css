@@ -7,6 +7,7 @@ body{
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center; 
+    background-attachment: fixed;
 }
 p{
     margin: 0;
@@ -89,8 +90,8 @@ h1{
     justify-content: center;
     align-items: center;
     padding: 3rem 2rem;
-    height: 16rem;
-    width: 12rem;
+    height: auto;
+    width: 17rem;
     border-radius: 3rem;
     margin: 0;
     text-align: center;
@@ -100,6 +101,13 @@ h1{
     font-size: 1.2rem;
     /* z-index: 1; */
     /* overflow: hidden;  */
+}
+
+.city-name{
+    /* word-break: break-word; */
+    /* overflow-wrap: break-word; */
+    white-space: normal;
+    max-width: 100%;
 }
 .hourly-daily-forecast{
     display: flex;
@@ -158,6 +166,9 @@ h1{
     position: fixed;
     top: 0;
     z-index: 1000;
+    background-color: transparent;
+    backdrop-filter: blur(10px);
+
 }
 
 .website-name{
